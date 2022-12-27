@@ -1,8 +1,6 @@
 import { CliCommandInterface } from '../cli-command/cli-command.interface.js';
 
-type Command = {
-  [key: string]: string[],
-}
+type Command = Record<string, string[]>;
 
 export default class CliApplication {
   private commands: { [propertyName: string]: CliCommandInterface } = {};
