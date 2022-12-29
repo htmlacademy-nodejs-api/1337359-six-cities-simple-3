@@ -1,0 +1,55 @@
+{
+  "api": {
+    "title": [
+      "Perfectly located Castro",
+      "Tile House",
+      "The Joshua Tree House",
+      "Amazing and Extremely Central Flat",
+      "Loft Studio in the Central Area",
+      "Nice, cozy, warm big bed apartment",
+      "The Pondhouse - A Magical Place"
+    ],
+    "description": [
+      "A new spacious villa, one floor. All commodities, jacuzzi and beautiful scenery. Ideal for families or friends.",
+      "I rent out a very sunny and bright apartment only 7 minutes walking distance to the metro station. The apartment has a spacious living room with a kitchen, one bedroom and a bathroom with mit bath. A terrace can be used in summer.",
+      "Peaceful studio in the most wanted area in town. Quiet house Near of everything. Completely renovated. Lovely neighbourhood, lot of trendy shops, restaurants and bars in a walking distance.",
+      "This is a place for dreamers to reset, reflect, and create. Designed with a 'slow' pace in mind, our hope is that you enjoy every part of your stay; from making local coffee by drip in the morning, choosing the perfect record to put on as the sun sets.",
+      "I am happy to welcome you to my apartment in the city center! Three words: location, cosy and chic!",
+      "A new spacious villa, one floor. All commodities, jacuzzi and beautiful scenery. Ideal for families or friends.",
+      "Discover daily local life in city center, friendly neighborhood, clandestine casino, karaoke, old-style artisans, art gallery and artist studio downstairs."
+    ],
+    "city": ["Amsterdam", "Dusseldorf", "Brussels", "Cologne", "Paris", "Hamburg"],
+    "images": [
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/1.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/2.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/3.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/4.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/5.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/6.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/7.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/8.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/9.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/10.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/11.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/12.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/13.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/14.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/15.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/16.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/17.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/18.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/19.jpg",
+      "https://assets.htmlacademy.ru/intensives/javascript-3/hotel/20.jpg"
+    ],
+    "type": ["Apartment", "House", "Room", "Hotel"],
+    "goods": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ]
+  }
+}
