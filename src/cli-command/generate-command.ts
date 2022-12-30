@@ -6,7 +6,7 @@ import OfferGenerator from '../common/offer-generator.js';
 
 export default class GenerateCommand implements CliCommandInterface {
   public readonly name = '--generate';
-  private initialData!: MockData;
+  private initialData?: MockData;
 
   public async execute(...parameters: string[]): Promise<void> {
     const [count, resultPath, sourceDataUrl] = parameters;
@@ -18,13 +18,17 @@ export default class GenerateCommand implements CliCommandInterface {
       console.log(`Не удалось загрузить данные с ${sourceDataUrl}`);
     }
 
-    const offerGeneratorString = new OfferGenerator(this.initialData);
-    const fileWriter = new TSVFileWriter(resultPath);
+    if (this.initialData) {
+      const offerGeneratorString = new OfferGenerator(this.initialData);
+      const fileWriter = new TSVFileWriter(resultPath);
 
-    for (let i = 1; i <= offerCount; i++) {
-      await fileWriter.write(offerGeneratorString.generate());
+      for (let i = 1; i <= offerCount; i++) {
+        await fileWriter.write(offerGeneratorString.generate());
+      }
+
+      console.log(`Файл ${resultPath} создан`);
+    } else {
+      console.log(`Не удалось создать файл ${resultPath}`);
     }
-
-    console.log(`Файл ${resultPath} создан`);
   }
 }
