@@ -4,6 +4,7 @@ import { ConfigInterface } from '../common/config/config.interface.js';
 import { DatabaseInterface } from '../common/database-client/database.interface.js';
 import { Component } from '../types/component.types.js';
 import { getURI } from '../utils/db.js';
+import { UserModel } from '../modules/user/user.modell.js';
 
 @injectable()
 export default class Application {
@@ -26,5 +27,16 @@ export default class Application {
     this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
 
     await this.dbClient.connect(uri);
+
+    const user = await UserModel.create({
+      name: 'Nut',
+      email: '1234',
+      avatar: 'img',
+      password: '000',
+      type: 'pro',
+    });
+    console.log(user);
+
+    await this.dbClient.disconnect();
   }
 }
