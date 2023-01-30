@@ -72,7 +72,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const maxGuests = generateRandomInt(MAX_GUESTS);
     const price = getPrettyNumber(generateRandomInt(PRICE.max, PRICE.min), 2);
     const goods = getRandomArr(this.mockData.goods);
-    const offerAuthorId = generateRandomInt(MAX_ID);
+    const offerAuthorId = `${generateRandomInt(MAX_ID)}`;
     const commentsNumber = generateRandomInt(MAX_COMMENTS);
     const latitude = LOCATION[city].latitude + getAdditionalLocationDigits();
     const longitude = LOCATION[city].longitude + getAdditionalLocationDigits();
