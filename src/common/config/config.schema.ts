@@ -36,13 +36,15 @@ export const configSchema = convict<ConfigSchema>({
     doc: 'Username to connect to MongoDB',
     format: String,
     env: 'DB_USER',
-    default: null,
+    // default: null,
+    default: 'admin',
   },
   DB_PASSWORD: {
     doc: 'Database connection password',
     format: String,
     env: 'DB_PASSWORD',
-    default: null,
+    // default: null,
+    default: 'test',
   },
   DB_PORT: {
     doc: 'Port to connect to MongoDB',

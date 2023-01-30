@@ -3,8 +3,9 @@ import { LoggerInterface } from '../common/logger/logger.interface.js';
 import { ConfigInterface } from '../common/config/config.interface.js';
 import { DatabaseInterface } from '../common/database-client/database.interface.js';
 import { Component } from '../types/component.types.js';
-import { getURI } from '../utils/db.js';
-import { UserModel } from '../modules/user/user.modell.js';
+// import { getURI } from '../utils/db.js';
+// import { UserModel } from '../modules/user/user.entity.js';
+// import { OfferModel } from '../modules/offer/offer.entity.js';
 
 @injectable()
 export default class Application {
@@ -15,27 +16,45 @@ export default class Application {
   ) {}
 
   public async init() {
-    const uri = getURI(
-      this.config.get('DB_USER'),
-      this.config.get('DB_PASSWORD'),
-      this.config.get('DB_HOST'),
-      this.config.get('DB_PORT'),
-      this.config.get('DB_NAME')
-    );
+    // const uri = getURI(
+    //   this.config.get('DB_USER'),
+    //   this.config.get('DB_PASSWORD'),
+    //   this.config.get('DB_HOST'),
+    //   this.config.get('DB_PORT'),
+    //   this.config.get('DB_NAME')
+    // );
 
     this.logger.info('Application was initialized');
     this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
 
-    await this.dbClient.connect(uri);
+    // await this.dbClient.connect(uri);
+    // const user = await UserModel.create({
+    //   name: 'Nut',
+    //   email: '1232',
+    //   avatar: 'img',
+    //   password: '000',
+    //   isPro: false,
+    // });
+    // console.log(user);
 
-    const user = await UserModel.create({
-      name: 'Nut',
-      email: '1234',
-      avatar: 'img',
-      password: '000',
-      type: 'pro',
-    });
-    console.log(user);
+    // const offer = await OfferModel.create({
+    //   title: 'Nut house house',
+    //   description: 'skjdfhsdkf sdfkjhdkjhsdfsdfd sfsdfd',
+    //   city: 'Cologne',
+    //   previewImage: 'path',
+    //   images: ['htmlacademy.ru/intensives/javascript-3/hotel/3.jpg', 'htmlacademy.ru/intensives/javascript-3/hotel/3.jpg', 'htmlacademy.ru/intensives/javascript-3/hotel/3.jpg', 'htmlacademy.ru/intensives/javascript-3/hotel/3.jpg', 'htmlacademy.ru/intensives/javascript-3/hotel/3.jpg', 'htmlacademy.ru/intensives/javascript-3/hotel/3.jpg'],
+    //   isPremium: false,
+    //   rating: 4,
+    //   type: 'House',
+    //   goods: ['Breakfast', 'Laptop friendly workspace'],
+    //   roomsNumber: 4,
+    //   maxGuests: 7,
+    //   price: 12346,
+    //   commentsNumber: 1,
+    //   userId: user.id,
+
+    // });
+    // console.log(offer);
 
     await this.dbClient.disconnect();
   }

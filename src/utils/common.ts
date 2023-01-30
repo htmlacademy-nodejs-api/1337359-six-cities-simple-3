@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 import { Offer } from '../types/offer.type.js';
 import { City } from '../types/city-type.type.js';
 import { OfferType } from '../types/offer-type.enum.js';
@@ -21,7 +23,7 @@ export const createOffer = (row: string): Offer => {
     maxGuests: parseInt(maxGuests, 10),
     price: parseInt(price, 10),
     goods: goods.split(';') as GoodsType[],
-    offerAuthorId: parseInt(offerAuthorId, 10),
+    offerAuthorId: offerAuthorId,
     commentsNumber: parseInt(commentsNumber, 10),
     location: {
       latitude: parseFloat(locationLatitude),
@@ -32,3 +34,9 @@ export const createOffer = (row: string): Offer => {
 
 export const getErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : '';
+
+export const createSHAHasher = (line: string, salt: string) => {
+  const SHAHasher = crypto.createHmac('sha256', salt);
+
+  return SHAHasher.update(line).digest('hex');
+};
