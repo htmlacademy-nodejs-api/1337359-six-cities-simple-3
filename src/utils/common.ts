@@ -1,5 +1,6 @@
 import crypto from 'crypto';
-
+import { plainToInstance } from 'class-transformer';
+import { ClassConstructor } from 'class-transformer/types/interfaces/class-constructor.type.js';
 import { Offer } from '../types/offer.type.js';
 import { City } from '../types/city-type.type.js';
 import { OfferType } from '../types/offer-type.enum.js';
@@ -40,3 +41,10 @@ export const createSHAHasher = (line: string, salt: string) => {
 
   return SHAHasher.update(line).digest('hex');
 };
+
+export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
+  plainToInstance(someDto, plainObject, { excludeExtraneousValues: true });
+
+export const createErrorObject = (message: string) => ({
+  error: message,
+});

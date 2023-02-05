@@ -40,16 +40,16 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
   @prop({ required: true, trim: true, minlength: 10, maxlength: 100 })
   public title: string;
 
-  @prop({ required: true, default: '', trim: true, minlength: 20, maxlength: 1024 })
+  @prop({ required: true, default: 'This is empty offer description', trim: true, minlength: 20, maxlength: 1024 })
   public description: string;
 
-  @prop({ required: true })
+  @prop({ required: true, default: new Date })
   public offerDate: Date;
 
-  @prop({ required: true })
+  @prop({ required: true, default: 'Paris' })
   public city: City;
 
-  @prop({ required: true, default: '' })
+  @prop({ required: true, default: 'https://assets.htmlacademy.ru/intensives/javascript-3/hotel/10.jpg' })
   public previewImage: string;
 
   @prop({ required: true, default: [] })
@@ -58,25 +58,25 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
   @prop ({ required: true, default: false })
   public isPremium: boolean;
 
-  @prop ({ required: true, min: 1, max: 5, default: 1})
+  @prop ({ min: 1, max: 5, default: 1})
   public rating: number;
 
   @prop({ required: true, default: 'Apartment', type: () => String, enum: OfferType })
   public type: OfferType;
 
-  @prop ({ required: true, min: 1, max: 8 })
+  @prop ({ required: true, min: 1, max: 8, default: 2 })
   public roomsNumber: number;
 
-  @prop ({ required: true, min: 1, max: 10 })
+  @prop({ required: true, min: 1, max: 10, default: 2 })
   public maxGuests: number;
 
-  @prop ({ required: true, min: 100, max: 100000 })
+  @prop({ required: true, min: 100, max: 100000, default: 2000 })
   public price: number;
 
   @prop({ required: true, default: [], type: () => Array })
   public goods: GoodsType[];
 
-  @prop ({ required: true })
+  @prop({ default: 0 })
   public commentsNumber: number;
 
   @prop({
