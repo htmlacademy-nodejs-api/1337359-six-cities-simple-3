@@ -6,10 +6,13 @@ import DatabaseService from '../common/database-client/database.service.js';
 import { getURI } from '../utils/db.js';
 import { UserServiceInterface } from '../modules/user/user-service.interface.js';
 import { OfferServiceInterface } from '../modules/offer/offer-service.interface.js';
+import { CommentServiceInterface } from '../modules/comment/comment-service.interface.js';
 import UserService from '../modules/user/user.service.js';
 import OfferService from '../modules/offer/offer.service.js';
+import CommentService from '../modules/comment/comment.service.js';
 import { OfferModel } from '../modules/offer/offer.entity.js';
 import { UserModel } from '../modules/user/user.entity.js';
+import { CommentModel } from '../modules/comment/comment.entity.js';
 import { LoggerInterface } from '../common/logger/logger.interface.js';
 import ConsoleLoggerService from '../common/logger/console-logger.service.js';
 import { Offer } from '../types/offer.type.js';
@@ -24,6 +27,7 @@ export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
   private databaseService!: DatabaseInterface;
   private userService!: UserServiceInterface;
+  private commentService!: CommentServiceInterface;
   private offerService!: OfferServiceInterface;
   private logger: LoggerInterface;
   private salt!: string;
@@ -35,6 +39,7 @@ export default class ImportCommand implements CliCommandInterface {
     this.logger = new ConsoleLoggerService();
     this.offerService = new OfferService(this.logger, OfferModel);
     this.userService = new UserService(this.logger, UserModel);
+    this.commentService = new CommentService(this.logger, CommentModel);
     this.databaseService = new DatabaseService(this.logger);
   }
 
@@ -48,8 +53,15 @@ export default class ImportCommand implements CliCommandInterface {
       isPro: false,
     }, this.salt);
 
-    await this.offerService.create({
+    const currentOffer = await this.offerService.create({
       ...offer,
+      userId: user.id,
+    });
+
+    await this.commentService.create({
+      text: 'орпорп xghdgfhg dthdh thty er kkjh',
+      rating: 3,
+      offerId: currentOffer.id,
       userId: user.id,
     });
   }
