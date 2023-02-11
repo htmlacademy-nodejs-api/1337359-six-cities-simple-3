@@ -96,21 +96,19 @@ export default class OfferService implements OfferServiceInterface {
             as: 'commentsRatings',
           },
         },
-        {
-          $addFields:
-          {
-            commentsNum: { $size: '$commentsRatings' },
-            avgRating: { $avg: '$commentsRatings' },
-            // Вопрос: Как правильно здесь посчитать среднее?
-          },
-        },
-        { $unset: 'commentsRatings' },
       ])
       .sort({ createdAt: SortType.Down })
       .limit(limit)
-      // Вопрос: если добавлять .populate... , получаю ошибку Свойство "populate" не существует в типе "Aggregate<any[]>"
-      // видимо, юзера нужно добавлять тоже через aggregate? Если да, это должен быть второй aggregate из users?
-      // .populate(['userId'])
-      .exec();
+      .exec().then((offers) => offers.map((it) => {
+        const result = {
+          ...it,
+          commentsNumber: it.commentsRatings.length,
+          rating: it.commentsRatings.length === 0 ? 0 :
+            it.commentsRatings.reduce((sum: number, current: Record<string, number>) => sum + current.rating, 0) / it.commentsRatings.length,
+        };
+        delete result.commentsRatings;
+
+        return result;
+      }));
   }
 }

@@ -39,8 +39,10 @@ export default class Application {
   }
 
   public async init() {
+    const serverPort = this.config.get('PORT');
+
     this.logger.info('Application was initialized');
-    this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
+    this.logger.info(`Get value from env $PORT: ${serverPort}`);
 
     const uri = getURI(
       this.config.get('DB_USER'),
@@ -55,11 +57,11 @@ export default class Application {
     this.initMiddleware();
     this.initRoutes();
     this.initExceptionFilters();
-    this.expressApp.listen(this.config.get('PORT'));
-    this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
+    this.expressApp.listen(serverPort);
+    this.logger.info(`Server started on http://localhost:${serverPort}`);
 
     // const offers = await this.offerService.findWidthComments();
-    // console.log(offers);
+    // console.log('app', offers);
 
     await this.dbClient.disconnect();
   }
