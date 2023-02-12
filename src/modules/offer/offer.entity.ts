@@ -3,7 +3,7 @@ import { Offer } from '../../types/offer.type.js';
 import { OfferType } from '../../types/offer-type.enum.js';
 import { GoodsType } from '../../types/goods-type.enum.js';
 import { LocationType } from '../../types/location-type.type.js';
-import { City } from '../../types/city-type.type.js';
+import { City } from '../../types/city-type.enum.js';
 import { UserEntity } from '../user/user.entity.js';
 
 interface IOffer extends Offer {
@@ -37,10 +37,11 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
     this.userId = data.userId;
   }
 
-  @prop({ required: true, trim: true, minlength: 10, maxlength: 100 })
+  @prop({ required: true, trim: true })
   public title: string;
 
-  @prop({ required: true, default: 'This is empty offer description', trim: true, minlength: 20, maxlength: 1024 })
+  @prop({ required: true, default: 'This is empty offer description', trim: true })
+
   public description: string;
 
   @prop({ required: true, default: new Date })
@@ -64,13 +65,13 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
   @prop({ required: true, default: 'Apartment', type: () => String, enum: OfferType })
   public type: OfferType;
 
-  @prop ({ required: true, min: 1, max: 8, default: 2 })
+  @prop ({ required: true, default: 2 })
   public roomsNumber: number;
 
-  @prop({ required: true, min: 1, max: 10, default: 2 })
+  @prop({ required: true, default: 2 })
   public maxGuests: number;
 
-  @prop({ required: true, min: 100, max: 100000, default: 2000 })
+  @prop({ required: true, default: 2000 })
   public price: number;
 
   @prop({ required: true, default: [], type: () => Array })
@@ -83,9 +84,6 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
     ref: UserEntity,
   })
   public userId: Ref<UserEntity>;
-
-  @prop()
-  public offerAuthorId!: string;
 
   @prop({ required: true, type: () => Object, default: {} })
   public location: LocationType;

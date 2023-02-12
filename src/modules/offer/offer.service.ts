@@ -40,9 +40,17 @@ export default class OfferService implements OfferServiceInterface {
     return this.create(dto);
   }
 
-  public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async findOfferById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findById(offerId)
+      .populate(['userId'])
+      .exec();
+  }
+
+  public async findOffersByCity(city: string, count?: number): Promise<DocumentType<OfferEntity>[]> {
+    const limit = count ?? DEFAULT_OFFER_COUNT;
+    return this.offerModel
+      .find({ city: city }, {}, { limit })
       .populate(['userId'])
       .exec();
   }
@@ -58,14 +66,14 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
+  public async updateOfferById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, { new: true })
       .populate(['userId'])
       .exec();
   }
 
-  public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async deleteOfferById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndDelete(offerId)
       .exec();
@@ -96,21 +104,25 @@ export default class OfferService implements OfferServiceInterface {
             as: 'commentsRatings',
           },
         },
-        {
-          $addFields:
-          {
-            commentsNum: { $size: '$commentsRatings' },
-            avgRating: { $avg: '$commentsRatings' },
-            // Вопрос: Как правильно здесь посчитать среднее?
-          },
-        },
-        { $unset: 'commentsRatings' },
       ])
       .sort({ createdAt: SortType.Down })
       .limit(limit)
-      // Вопрос: если добавлять .populate... , получаю ошибку Свойство "populate" не существует в типе "Aggregate<any[]>"
-      // видимо, юзера нужно добавлять тоже через aggregate? Если да, это должен быть второй aggregate из users?
-      // .populate(['userId'])
-      .exec();
+      .exec()
+      .then((offers) => offers.map((it) => {
+        const result = {
+          ...it,
+          commentsNumber: it.commentsRatings.length,
+          rating: it.commentsRatings.length === 0 ? 0 :
+            it.commentsRatings.reduce((sum: number, current: Record<string, number>) => sum + current.rating, 0) / it.commentsRatings.length,
+        };
+        delete result.commentsRatings;
+
+        return result;
+      }));
+  }
+
+  public async exists(offerId: string): Promise<boolean> {
+    return (await this.offerModel
+      .exists({ _id: offerId })) !== null;
   }
 }

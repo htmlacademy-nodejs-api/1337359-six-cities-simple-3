@@ -1,12 +1,12 @@
 import crypto from 'crypto';
 import { plainToInstance } from 'class-transformer';
 import { ClassConstructor } from 'class-transformer/types/interfaces/class-constructor.type.js';
-import { Offer } from '../types/offer.type.js';
-import { City } from '../types/city-type.type.js';
+import { MockOffer } from '../types/mock-offer.type.js';
+import { City } from '../types/city-type.enum.js';
 import { OfferType } from '../types/offer-type.enum.js';
 import { GoodsType } from '../types/goods-type.enum.js';
 
-export const createOffer = (row: string): Offer => {
+export const createOffer = (row: string): MockOffer => {
   const [title, description, offerDate, city, previewImage, images, isPremium, rating, type, roomsNumber, maxGuests,
     price, goods, offerAuthorId, commentsNumber, locationLatitude, locationLongitude] = row.replace('\n', '').split('\t');
 

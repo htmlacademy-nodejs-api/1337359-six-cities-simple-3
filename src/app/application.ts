@@ -21,6 +21,7 @@ export default class Application {
     @inject(Component.OfferController) private offerController: ControllerInterface,
     @inject(Component.UserController) private userController: ControllerInterface,
     @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
+    @inject(Component.CommentController) private commentController: ControllerInterface,
   ) {
     this.expressApp = express();
   }
@@ -28,6 +29,7 @@ export default class Application {
   public initRoutes() {
     this.expressApp.use('/offers', this.offerController.router);
     this.expressApp.use('/users', this.userController.router);
+    this.expressApp.use('/comments', this.commentController.router);
   }
 
   public initMiddleware() {
@@ -39,8 +41,10 @@ export default class Application {
   }
 
   public async init() {
+    const serverPort = this.config.get('PORT');
+
     this.logger.info('Application was initialized');
-    this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
+    this.logger.info(`Get value from env $PORT: ${serverPort}`);
 
     const uri = getURI(
       this.config.get('DB_USER'),
@@ -55,12 +59,12 @@ export default class Application {
     this.initMiddleware();
     this.initRoutes();
     this.initExceptionFilters();
-    this.expressApp.listen(this.config.get('PORT'));
-    this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
+    this.expressApp.listen(serverPort);
+    this.logger.info(`Server started on http://localhost:${serverPort}`);
 
     // const offers = await this.offerService.findWidthComments();
-    // console.log(offers);
+    // console.log('app', offers);
 
-    await this.dbClient.disconnect();
+    // await this.dbClient.disconnect();
   }
 }

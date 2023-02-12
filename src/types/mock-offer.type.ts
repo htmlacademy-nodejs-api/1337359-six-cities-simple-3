@@ -3,7 +3,7 @@ import { GoodsType } from './goods-type.enum.js';
 import { LocationType } from './location-type.type.js';
 import { City } from './city-type.enum.js';
 
-export type Offer = {
+export type MockOffer = {
   title: string;
   description: string;
   offerDate: Date;
@@ -17,6 +17,7 @@ export type Offer = {
   maxGuests: number;
   price: number;
   goods: GoodsType[];
+  offerAuthorId: string;
   commentsNumber: number;
   location: LocationType;
 }
