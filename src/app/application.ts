@@ -34,6 +34,10 @@ export default class Application {
 
   public initMiddleware() {
     this.expressApp.use(express.json());
+    this.expressApp.use(
+      '/upload',
+      express.static(this.config.get('UPLOAD_DIRECTORY'))
+    );
   }
 
   public initExceptionFilters() {
@@ -51,7 +55,7 @@ export default class Application {
       this.config.get('DB_PASSWORD'),
       this.config.get('DB_HOST'),
       this.config.get('DB_PORT'),
-      this.config.get('DB_NAME')
+      this.config.get('DB_NAME'),
     );
 
     await this.dbClient.connect(uri);
@@ -65,6 +69,6 @@ export default class Application {
     // const offers = await this.offerService.findWidthComments();
     // console.log('app', offers);
 
-    // await this.dbClient.disconnect();
+    await this.dbClient.disconnect();
   }
 }
