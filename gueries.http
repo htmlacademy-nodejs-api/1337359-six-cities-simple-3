@@ -136,3 +136,15 @@ Content-Type: application/json
 GET http://localhost:31337/offers/63dff68fe113cba06642b093/comments HTTP/1.1
 
 ###
+
+## Отправка аватарки пользователю
+
+POST http://localhost:31337/users/62823cb2c5a64ce9f1b50eb6/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="a.png"
+Content-Type: image/png
+
+< /Users/tmp/a.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
