@@ -21,6 +21,7 @@ export default class Application {
     @inject(Component.OfferController) private offerController: ControllerInterface,
     @inject(Component.UserController) private userController: ControllerInterface,
     @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
+    @inject(Component.CommentController) private commentController: ControllerInterface,
   ) {
     this.expressApp = express();
   }
@@ -28,6 +29,7 @@ export default class Application {
   public initRoutes() {
     this.expressApp.use('/offers', this.offerController.router);
     this.expressApp.use('/users', this.userController.router);
+    this.expressApp.use('/comments', this.commentController.router);
   }
 
   public initMiddleware() {
@@ -63,6 +65,6 @@ export default class Application {
     // const offers = await this.offerService.findWidthComments();
     // console.log('app', offers);
 
-    await this.dbClient.disconnect();
+    // await this.dbClient.disconnect();
   }
 }

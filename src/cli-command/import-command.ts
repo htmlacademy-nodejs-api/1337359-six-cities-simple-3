@@ -6,31 +6,26 @@ import DatabaseService from '../common/database-client/database.service.js';
 import { getURI } from '../utils/db.js';
 import { UserServiceInterface } from '../modules/user/user-service.interface.js';
 import { OfferServiceInterface } from '../modules/offer/offer-service.interface.js';
-import { CommentServiceInterface } from '../modules/comment/comment-service.interface.js';
 import UserService from '../modules/user/user.service.js';
 import OfferService from '../modules/offer/offer.service.js';
-import CommentService from '../modules/comment/comment.service.js';
 import { OfferModel } from '../modules/offer/offer.entity.js';
 import { UserModel } from '../modules/user/user.entity.js';
-import { CommentModel } from '../modules/comment/comment.entity.js';
 import { LoggerInterface } from '../common/logger/logger.interface.js';
 import ConsoleLoggerService from '../common/logger/console-logger.service.js';
 import { Offer } from '../types/offer.type.js';
 
 const DEFAULT_DB_PORT = 27017;
+const DEFAULT_USER_EMAIL = 'nouser@usera.net';
+const DEFAULT_USER_ID = '63e9055178f4d29c543a2beb';
 
-const DEFAULT_USER_PASSWORD = 'a112233';
-const DEFAULT_USER_NAME = 'Nut';
-const DEFAULT_USER_AVATAR = 'img';
+// Вопрос: такое решение подойдет вместо дефолтного юзера с паролем?
 
 export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
   private databaseService!: DatabaseInterface;
   private userService!: UserServiceInterface;
-  private commentService!: CommentServiceInterface;
   private offerService!: OfferServiceInterface;
   private logger: LoggerInterface;
-  private salt!: string;
 
   constructor() {
     this.onCompleteLine = this.onCompleteLine.bind(this);
@@ -39,30 +34,16 @@ export default class ImportCommand implements CliCommandInterface {
     this.logger = new ConsoleLoggerService();
     this.offerService = new OfferService(this.logger, OfferModel);
     this.userService = new UserService(this.logger, UserModel);
-    this.commentService = new CommentService(this.logger, CommentModel);
     this.databaseService = new DatabaseService(this.logger);
   }
 
   private async saveOffer(offer: Offer) {
 
-    const user = await this.userService.findOrCreate({
-      name: DEFAULT_USER_NAME,
-      password: DEFAULT_USER_PASSWORD,
-      email: offer.offerAuthorId,
-      avatar: DEFAULT_USER_AVATAR,
-      isPro: false,
-    }, this.salt);
+    const user = await this.userService.findByEmail(DEFAULT_USER_EMAIL);
 
-    const currentOffer = await this.offerService.create({
+    await this.offerService.create({
       ...offer,
-      userId: user.id,
-    });
-
-    await this.commentService.create({
-      text: 'орпорп xghdgfhg dthdh thty er kkjh',
-      rating: 3,
-      offerId: currentOffer.id,
-      userId: user.id,
+      userId: user ? user.id : DEFAULT_USER_ID,
     });
   }
 
@@ -77,9 +58,8 @@ export default class ImportCommand implements CliCommandInterface {
     this.databaseService.disconnect();
   }
 
-  public async execute(filename: string, login: string, password: string, host: string, dbname: string, salt: string): Promise<void> {
+  public async execute(filename: string, login: string, password: string, host: string, dbname: string): Promise<void> {
     const uri = getURI(login, password, host, DEFAULT_DB_PORT, dbname);
-    this.salt = salt;
 
     await this.databaseService.connect(uri);
 

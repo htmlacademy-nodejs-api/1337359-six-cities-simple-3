@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { OfferGeneratorInterface } from './offer-generator.interface.js';
 import { MockData } from '../types/mock-data.type.js';
-import { City } from '../types/city-type.type.js';
+import { City } from '../types/city-type.enum.js';
 import { getRandomItem, getRandomArr, generateRandomInt, generateRandomFloat, getPrettyNumber } from '../utils/random.js';
 
 const IMAGES_NUMBER = 6;
