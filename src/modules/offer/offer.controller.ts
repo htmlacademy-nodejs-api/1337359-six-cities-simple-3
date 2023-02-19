@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import * as core from 'express-serve-static-core';
+
 import { StatusCodes } from 'http-status-codes';
 import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
@@ -18,6 +19,9 @@ import HttpError from '../../common/errors/http-error.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { SameUserIdMiddleware } from '../../common/middlewares/same-userId.middleware.js';
+import { ROUTE } from '../../common/const.js';
 
 type ParamsGetOffer = {
   offerId: string;
@@ -37,13 +41,16 @@ export default class OfferController extends Controller {
 
     this.logger.info('Register routes for OfferController');
 
-    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
+    this.addRoute({ path: ROUTE.ROOT, method: HttpMethod.Get, handler: this.index });
 
     this.addRoute({
-      path: '/',
+      path: ROUTE.ROOT,
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)],
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto)
+      ],
     });
 
     this.addRoute({
@@ -63,7 +70,9 @@ export default class OfferController extends Controller {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
+        new SameUserIdMiddleware('offerId', this.offerService),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
     });
@@ -73,7 +82,9 @@ export default class OfferController extends Controller {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
+        new SameUserIdMiddleware('offerId', this.offerService),
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -97,11 +108,12 @@ export default class OfferController extends Controller {
   }
 
   public async create(
-    { body }: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
-    res: Response): Promise<void> {
+    req: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
+    res: Response
+  ): Promise<void> {
+    const { body, user } = req;
 
     const existOffer = await this.offerService.findOfferByTitle(body.title);
-
     if (existOffer) {
       throw new HttpError(
         StatusCodes.UNPROCESSABLE_ENTITY,
@@ -110,7 +122,7 @@ export default class OfferController extends Controller {
       );
     }
 
-    const result = await this.offerService.create(body);
+    const result = await this.offerService.create({ ...body, userId: user.id });
     const offer = await this.offerService.findOfferById(result.id);
     this.created(res, fillDTO(OfferResponse, offer));
   }
@@ -126,9 +138,10 @@ export default class OfferController extends Controller {
   }
 
   public async delete(
-    { params }: Request<core.ParamsDictionary | ParamsGetOffer>,
+    req: Request<core.ParamsDictionary | ParamsGetOffer>,
     res: Response
   ): Promise<void> {
+    const { params } = req;
     const { offerId } = params;
     const offer = await this.offerService.deleteOfferById(offerId);
 
@@ -138,9 +151,10 @@ export default class OfferController extends Controller {
   }
 
   public async update(
-    { body, params }: Request<core.ParamsDictionary | ParamsGetOffer, Record<string, unknown>, UpdateOfferDto>,
+    req: Request<core.ParamsDictionary | ParamsGetOffer, Record<string, unknown>, UpdateOfferDto>,
     res: Response
   ): Promise<void> {
+    const { body, params } = req;
     const updatedOffer = await this.offerService.updateOfferById(params.offerId, body);
 
     this.ok(res, fillDTO(OfferResponse, updatedOffer));

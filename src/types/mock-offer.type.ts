@@ -17,7 +17,7 @@ export type MockOffer = {
   maxGuests: number;
   price: number;
   goods: GoodsType[];
-  offerAuthorId: string;
+  userId: string;
   commentsNumber: number;
   location: LocationType;
 }

@@ -1,10 +1,13 @@
 import crypto from 'crypto';
+import * as jose from 'jose';
 import { plainToInstance } from 'class-transformer';
 import { ClassConstructor } from 'class-transformer/types/interfaces/class-constructor.type.js';
+
 import { MockOffer } from '../types/mock-offer.type.js';
 import { City } from '../types/city-type.enum.js';
 import { OfferType } from '../types/offer-type.enum.js';
 import { GoodsType } from '../types/goods-type.enum.js';
+import { ENCODING, JWT_EXPIRATION_TIME } from '../common/const.js';
 
 export const createOffer = (row: string): MockOffer => {
   const [title, description, offerDate, city, previewImage, images, isPremium, rating, type, roomsNumber, maxGuests,
@@ -24,7 +27,7 @@ export const createOffer = (row: string): MockOffer => {
     maxGuests: parseInt(maxGuests, 10),
     price: parseInt(price, 10),
     goods: goods.split(';') as GoodsType[],
-    offerAuthorId: offerAuthorId,
+    userId: offerAuthorId,
     commentsNumber: parseInt(commentsNumber, 10),
     location: {
       latitude: parseFloat(locationLatitude),
@@ -48,3 +51,10 @@ export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
 export const createErrorObject = (message: string) => ({
   error: message,
 });
+
+export const createJWT = async (algorism: string, jwtSecret: string, payload: object): Promise<string> =>
+  new jose.SignJWT({ ...payload })
+    .setProtectedHeader({ alg: algorism })
+    .setIssuedAt()
+    .setExpirationTime(JWT_EXPIRATION_TIME)
+    .sign(crypto.createSecretKey(jwtSecret, ENCODING));

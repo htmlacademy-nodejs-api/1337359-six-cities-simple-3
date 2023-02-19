@@ -19,4 +19,5 @@ export type Offer = {
   goods: GoodsType[];
   commentsNumber: number;
   location: LocationType;
+  userId: string;
 }

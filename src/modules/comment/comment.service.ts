@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { DocumentType, types } from '@typegoose/typegoose';
+
 import { CommentServiceInterface } from './comment-service.interface.js';
 import { Component } from '../../types/component.types.js';
 import { CommentEntity } from './comment.entity.js';

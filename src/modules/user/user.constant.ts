@@ -10,3 +10,5 @@ export const VALIDATION_ERROR = {
   AVATAR: 'Avatar image must be string',
   PRO: 'Type is required and must be boolean',
 };
+
+export const JWT_ALGORISM = 'HS256';

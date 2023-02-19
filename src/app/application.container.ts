@@ -1,4 +1,5 @@
 import { Container } from 'inversify';
+
 import { ExceptionFilterInterface } from '../common/errors/exception-filter.interface.js';
 import Application from './application.js';
 import { ConfigInterface } from '../common/config/config.interface.js';

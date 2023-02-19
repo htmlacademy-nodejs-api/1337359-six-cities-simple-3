@@ -1,6 +1,8 @@
 import EventEmitter from 'events';
 import { createReadStream } from 'fs';
+
 import { FileReaderInterface } from './file-reader.interface.js';
+import { EVENT_NAME, ENCODING, HIGH_WATER_MARK } from '../common/const.js';
 
 export default class TSVFileReader extends EventEmitter implements FileReaderInterface {
   constructor(public fileName: string) {
@@ -9,8 +11,8 @@ export default class TSVFileReader extends EventEmitter implements FileReaderInt
 
   public async read(): Promise<void> {
     const stream = createReadStream(this.fileName, {
-      highWaterMark: 2 ** 14,
-      encoding: 'utf-8',
+      highWaterMark: HIGH_WATER_MARK,
+      encoding: ENCODING,
     });
 
     let lineRead = '';
@@ -27,11 +29,11 @@ export default class TSVFileReader extends EventEmitter implements FileReaderInt
         lineRead = lineRead.slice(endLinePosition);
 
         await new Promise((resolve) => {
-          this.emit('completeLine', completeRow, resolve);
+          this.emit(EVENT_NAME.LINE, completeRow, resolve);
         });
       }
     }
 
-    this.emit('end', importedRowCount);
+    this.emit(EVENT_NAME.FILE, importedRowCount);
   }
 }

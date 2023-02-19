@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
+
 import { appContainer } from './app/application.container.js';
 import Application from './app/application.js';
 import { Component } from './types/component.types.js';
