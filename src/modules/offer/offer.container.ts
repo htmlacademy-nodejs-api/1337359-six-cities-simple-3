@@ -1,5 +1,6 @@
 import { Container } from 'inversify';
 import { types } from '@typegoose/typegoose';
+
 import { OfferServiceInterface } from './offer-service.interface.js';
 import { ControllerInterface } from '../../common/controller/controller.interface.js';
 import OfferService from './offer.service.js';

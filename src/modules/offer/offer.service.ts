@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { DocumentType, types } from '@typegoose/typegoose';
+
 import { OfferServiceInterface } from './offer-service.interface.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
@@ -38,6 +39,12 @@ export default class OfferService implements OfferServiceInterface {
     }
 
     return this.create(dto);
+  }
+
+  public async findOfferWithoutUser(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findById(offerId)
+      .exec();
   }
 
   public async findOfferById(offerId: string): Promise<DocumentType<OfferEntity> | null> {

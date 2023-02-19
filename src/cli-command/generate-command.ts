@@ -1,4 +1,5 @@
 import { got } from 'got';
+
 import { CliCommandInterface } from './cli-command.interface.js';
 import TSVFileWriter from '../common/tsv-file-writer.js';
 import { MockData } from '../types/mock-data.type.js';

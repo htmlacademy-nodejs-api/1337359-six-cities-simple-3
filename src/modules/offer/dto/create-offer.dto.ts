@@ -1,6 +1,5 @@
-import { Ref } from '@typegoose/typegoose';
-import { IsArray, IsString, IsBoolean, IsDateString, IsEnum, ArrayMinSize, ArrayMaxSize, IsInt, IsMongoId, Max, MaxLength, Min, MinLength } from 'class-validator';
-import { UserEntity } from '../../user/user.entity.js';
+import { IsArray, IsString, IsBoolean, IsDateString, IsEnum, ArrayMinSize, ArrayMaxSize, IsInt, Max, MaxLength, Min, MinLength } from 'class-validator';
+
 import { OfferType } from '../../../types/offer-type.enum.js';
 import { GoodsType } from '../../../types/goods-type.enum.js';
 import { LocationType } from '../../../types/location-type.type.js';
@@ -55,11 +54,8 @@ export default class CreateOfferDto {
   @IsArray({ message: VALIDATION_ERROR.GOODS })
   public goods!: GoodsType[];
 
-  @IsMongoId({ message: VALIDATION_ERROR.ID })
-  public userId!: Ref<UserEntity | undefined>;
-
+  public userId!: string;
   public commentsNumber!: number;
 
-  // Вопрос: как валидировать локацию здесь и в updateDTO?
   public location!: LocationType;
 }

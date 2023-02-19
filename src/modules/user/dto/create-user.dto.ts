@@ -1,4 +1,5 @@
 import { IsEmail, IsString, IsBoolean, MaxLength, MinLength } from 'class-validator';
+
 import { VALIDATION_ERROR } from '../user.constant.js';
 
 export default class CreateUserDto {

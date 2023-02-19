@@ -1,10 +1,11 @@
 import { IsMongoId, Max, MaxLength, Min, MinLength, IsString, IsInt } from 'class-validator';
+
 import { VALIDATION_ERROR } from '../comment.constant.js';
 
 export default class CreateCommentDto {
   @IsString({ message: VALIDATION_ERROR.REQUIRED_TEXT })
-  @MinLength(10, { message: VALIDATION_ERROR.TEXT_MIN })
-  @MaxLength(100, { message: VALIDATION_ERROR.TEXT_MAX })
+  @MinLength(5, { message: VALIDATION_ERROR.TEXT_MIN })
+  @MaxLength(1024, { message: VALIDATION_ERROR.TEXT_MAX })
   public text!: string;
 
   @IsInt({ message: VALIDATION_ERROR.REQUIRED_RATING })
@@ -15,6 +16,5 @@ export default class CreateCommentDto {
   @IsMongoId({ message: VALIDATION_ERROR.ID })
   public offerId!: string;
 
-  @IsMongoId({ message: VALIDATION_ERROR.ID })
   public userId!: string;
 }

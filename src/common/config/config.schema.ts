@@ -11,7 +11,8 @@ export type ConfigSchema = {
   DB_PASSWORD: string;
   DB_PORT: number;
   DB_NAME: string;
-  UPLOAD_DIRECTORY: string
+  UPLOAD_DIRECTORY: string;
+  JWT_SECRET: string;
 }
 
 export const configSchema = convict<ConfigSchema>({
@@ -37,14 +38,12 @@ export const configSchema = convict<ConfigSchema>({
     doc: 'Username to connect to MongoDB',
     format: String,
     env: 'DB_USER',
-    // default: null,
     default: 'admin',
   },
   DB_PASSWORD: {
     doc: 'Database connection password',
     format: String,
     env: 'DB_PASSWORD',
-    // default: null,
     default: 'test',
   },
   DB_PORT: {
@@ -64,5 +63,11 @@ export const configSchema = convict<ConfigSchema>({
     format: String,
     env: 'UPLOAD_DIRECTORY',
     default: './upload',
+  },
+  JWT_SECRET: {
+    doc: 'Secret for sign JWT',
+    format: String,
+    env: 'JWT_SECRET',
+    default: null,
   },
 });

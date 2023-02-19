@@ -1,4 +1,5 @@
 import { DocumentType } from '@typegoose/typegoose';
+
 import CreateOfferDto from './dto/create-offer.dto.js';
 import { OfferEntity } from './offer.entity.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
@@ -16,4 +17,5 @@ export interface OfferServiceInterface extends DocumentExistsInterface {
   incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   findWidthComments(count?: number): Promise<DocumentType<OfferEntity>[]>;
   exists(offerId: string): Promise<boolean>;
+  findOfferWithoutUser(offerId: string): Promise<DocumentType<OfferEntity> | null>
 }

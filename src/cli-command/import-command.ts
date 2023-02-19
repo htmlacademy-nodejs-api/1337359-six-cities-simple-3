@@ -13,6 +13,7 @@ import { UserModel } from '../modules/user/user.entity.js';
 import { LoggerInterface } from '../common/logger/logger.interface.js';
 import ConsoleLoggerService from '../common/logger/console-logger.service.js';
 import { Offer } from '../types/offer.type.js';
+import { EVENT_NAME } from '../common/const.js';
 
 const DEFAULT_DB_PORT = 27017;
 const DEFAULT_USER_EMAIL = 'nouser@usera.net';
@@ -65,8 +66,8 @@ export default class ImportCommand implements CliCommandInterface {
 
     const fileReader = new TSVFileReader(filename.trim());
 
-    fileReader.on('completeLine', this.onCompleteLine);
-    fileReader.on('end', this.onCompleteFile);
+    fileReader.on(EVENT_NAME.LINE, this.onCompleteLine);
+    fileReader.on(EVENT_NAME.FILE, this.onCompleteFile);
 
     try {
       await fileReader.read();

@@ -1,4 +1,5 @@
 import typegoose, { getModelForClass, defaultClasses } from '@typegoose/typegoose';
+
 import { User } from '../../types/user.type.js';
 import { createSHAHasher } from '../../utils/common.js';
 
@@ -17,7 +18,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
     this.isPro = data.isPro;
   }
 
-  @prop({required: true, minlength: 1, maxlength: 15})
+  @prop({required: true })
   public name: string;
 
   @prop({ unique: true, required: true })
@@ -38,6 +39,11 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
 
   public getPassword() {
     return this.password;
+  }
+
+  public verifyPassword(password: string, salt: string) {
+
+    return createSHAHasher(password, salt) === this.password;
   }
 }
 

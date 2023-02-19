@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { inject } from 'inversify';
 import { StatusCodes } from 'http-status-codes';
+
 import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
@@ -11,7 +12,9 @@ import HttpError from '../../common/errors/http-error.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { fillDTO } from '../../utils/common.js';
 import CommentResponse from './response/comment.response.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { ROUTE } from '../../common/const.js';
 
 export default class CommentController extends Controller {
   constructor(
@@ -23,17 +26,21 @@ export default class CommentController extends Controller {
 
     this.logger.info('Register routes for CommentController…');
     this.addRoute({
-      path: '/',
+      path: ROUTE.ROOT,
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)],
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateCommentDto),
+      ],
     });
   }
 
   public async create(
-    { body }: Request<object, object, CreateCommentDto>,
+    req: Request<object, object, CreateCommentDto>,
     res: Response
   ): Promise<void> {
+    const { body } = req;
 
     if (!await this.offerService.exists(body.offerId)) {
       throw new HttpError(
@@ -43,7 +50,7 @@ export default class CommentController extends Controller {
       );
     }
 
-    const comment = await this.commentService.create(body);
+    const comment = await this.commentService.create({ ...body, userId: req.user.id });
     await this.offerService.incCommentCount(body.offerId);
     this.created(res, fillDTO(CommentResponse, comment));
   }
