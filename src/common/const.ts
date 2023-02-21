@@ -5,8 +5,8 @@ export const HIGH_WATER_MARK = 2 ** 14;
 export const ROUTE = {
   ROOT: '/',
   OFFERS: '/offers',
-  COMMENTS: '/users',
-  USERS: '/comments',
+  COMMENTS: '/comments',
+  USERS: '/users',
   UPLOAD: '/upload',
 };
 

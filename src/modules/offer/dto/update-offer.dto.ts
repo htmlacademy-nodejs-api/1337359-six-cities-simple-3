@@ -56,6 +56,9 @@ export default class UpdateOfferDto {
   public price?: number;
 
   @IsOptional()
+  public rating?: number;
+
+  @IsOptional()
   @IsArray({ message: VALIDATION_ERROR.GOODS })
   public goods?: GoodsType[];
 

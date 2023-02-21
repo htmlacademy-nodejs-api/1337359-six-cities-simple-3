@@ -31,6 +31,8 @@ export class CommentEntity extends defaultClasses.TimeStamps {
     required: true,
   })
   public userId!: Ref<UserEntity>;
+
+  public avg?: number;
 }
 
 export const CommentModel = getModelForClass(CommentEntity);
