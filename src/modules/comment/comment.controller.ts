@@ -51,7 +51,13 @@ export default class CommentController extends Controller {
     }
 
     const comment = await this.commentService.create({ ...body, userId: req.user.id });
+    const avgRatings = await this.commentService.findAvgRating();
+    const avgRating = avgRatings.find((it) => it._id.toString() === body.offerId)?.avg;
+    const newRating = avgRating ? Math.trunc(avgRating * 10) / 10 : body.rating;
+
     await this.offerService.incCommentCount(body.offerId);
+    await this.offerService.updateOfferById(body.offerId, { rating: newRating });
+
     this.created(res, fillDTO(CommentResponse, comment));
   }
 }
