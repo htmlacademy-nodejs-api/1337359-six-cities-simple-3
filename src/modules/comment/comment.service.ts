@@ -32,6 +32,12 @@ export default class CommentService implements CommentServiceInterface {
       .populate('userId');
   }
 
+  public async findAvgRating(): Promise<DocumentType<CommentEntity>[]> {
+
+    return this.commentModel
+      .aggregate([{ $group: { _id: '$offerId' , avg:{$avg:'$rating'}}}]);
+  }
+
   public async deleteByOfferId(offerId: string): Promise<number> {
     const result = await this.commentModel
       .deleteMany({ offerId })
