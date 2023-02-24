@@ -10,6 +10,7 @@ import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { Component } from '../../types/component.types.js';
 import { SortType } from '../../types/sort-type.enum.js';
 import { DEFAULT_OFFER_COUNT } from './offer.constant.js';
+import { FIELD_NAME } from '../../common/const.js';
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
@@ -50,7 +51,7 @@ export default class OfferService implements OfferServiceInterface {
   public async findOfferById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findById(offerId)
-      .populate(['userId'])
+      .populate([FIELD_NAME.USER_ID])
       .exec();
   }
 
@@ -58,7 +59,7 @@ export default class OfferService implements OfferServiceInterface {
     const limit = count ?? DEFAULT_OFFER_COUNT;
     return this.offerModel
       .find({ city: city }, {}, { limit })
-      .populate(['userId'])
+      .populate([FIELD_NAME.USER_ID])
       .exec();
   }
 
@@ -69,14 +70,14 @@ export default class OfferService implements OfferServiceInterface {
       .find()
       .sort({ createdAt: SortType.Down })
       .limit(limit)
-      .populate(['userId'])
+      .populate([FIELD_NAME.USER_ID])
       .exec();
   }
 
   public async updateOfferById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, { new: true })
-      .populate(['userId'])
+      .populate([FIELD_NAME.USER_ID])
       .exec();
   }
 

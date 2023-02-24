@@ -15,11 +15,11 @@ import ConsoleLoggerService from '../common/logger/console-logger.service.js';
 import { Offer } from '../types/offer.type.js';
 import { EVENT_NAME } from '../common/const.js';
 
-const DEFAULT_DB_PORT = 27017;
-const DEFAULT_USER_EMAIL = 'nouser@usera.net';
-const DEFAULT_USER_ID = '63e9055178f4d29c543a2beb';
-
-// Вопрос: такое решение подойдет вместо дефолтного юзера с паролем?
+const DEFAULT_PARAM = {
+  DB_PORT: 27017,
+  USER_EMAIL: 'nouser@usera.net',
+  USER_ID: '63e9055178f4d29c543a2beb',
+} as const;
 
 export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
@@ -40,11 +40,11 @@ export default class ImportCommand implements CliCommandInterface {
 
   private async saveOffer(offer: Offer) {
 
-    const user = await this.userService.findByEmail(DEFAULT_USER_EMAIL);
+    const user = await this.userService.findByEmail(DEFAULT_PARAM.USER_EMAIL);
 
     await this.offerService.create({
       ...offer,
-      userId: user ? user.id : DEFAULT_USER_ID,
+      userId: user ? user.id : DEFAULT_PARAM.USER_ID,
     });
   }
 
@@ -60,7 +60,7 @@ export default class ImportCommand implements CliCommandInterface {
   }
 
   public async execute(filename: string, login: string, password: string, host: string, dbname: string): Promise<void> {
-    const uri = getURI(login, password, host, DEFAULT_DB_PORT, dbname);
+    const uri = getURI(login, password, host, DEFAULT_PARAM.DB_PORT, dbname);
 
     await this.databaseService.connect(uri);
 

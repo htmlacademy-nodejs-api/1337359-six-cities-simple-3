@@ -2,12 +2,12 @@ import typegoose, { getModelForClass, defaultClasses } from '@typegoose/typegoos
 
 import { User } from '../../types/user.type.js';
 import { createSHAHasher } from '../../utils/common.js';
-
-const { prop, modelOptions } = typegoose;
+import { COLLECTION_NAME } from '../../common/const.js';
 
 export interface UserEntity extends defaultClasses.Base {}
+const { prop, modelOptions } = typegoose;
 
-@modelOptions({ schemaOptions: { collection: 'users' }})
+@modelOptions({ schemaOptions: { collection: COLLECTION_NAME.USER }})
 export class UserEntity extends defaultClasses.TimeStamps implements User {
   constructor(data: User) {
     super();

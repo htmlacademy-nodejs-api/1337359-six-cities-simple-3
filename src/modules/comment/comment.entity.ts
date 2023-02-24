@@ -2,6 +2,7 @@ import typegoose, { getModelForClass, Ref, defaultClasses } from '@typegoose/typ
 
 import { UserEntity } from '../user/user.entity.js';
 import { OfferEntity } from '../offer/offer.entity.js';
+import { COLLECTION_NAME } from '../../common/const.js';
 
 const { prop, modelOptions } = typegoose;
 
@@ -9,7 +10,7 @@ export interface CommentEntity extends defaultClasses.Base { }
 
 @modelOptions({
   schemaOptions: {
-    collection: 'comments'
+    collection: COLLECTION_NAME.COMMENT,
   }
 })
 
