@@ -5,12 +5,13 @@ import { GoodsType } from '../../types/goods-type.enum.js';
 import { LocationType } from '../../types/location-type.type.js';
 import { City } from '../../types/city-type.enum.js';
 import { UserEntity } from '../user/user.entity.js';
+import { COLLECTION_NAME, DEFAULT_VALUE } from '../../common/const.js';
 
 const { prop, modelOptions } = typegoose;
 
 export interface OfferEntity extends defaultClasses.Base { }
 
-@modelOptions({ schemaOptions: { collection: 'offers' } })
+@modelOptions({ schemaOptions: { collection: COLLECTION_NAME.OFFER } })
 export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
   constructor(data: Offer) {
     super();
@@ -36,17 +37,16 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
   @prop({ trim: true })
   public title: string;
 
-  @prop({ default: 'This is empty offer description', trim: true })
-
+  @prop({ default: DEFAULT_VALUE.DESCRIPTION, trim: true })
   public description: string;
 
   @prop({ default: new Date })
   public offerDate: Date;
 
-  @prop({ default: 'Paris' })
+  @prop({ default: DEFAULT_VALUE.CITY })
   public city: City;
 
-  @prop({ default: 'https://assets.htmlacademy.ru/intensives/javascript-3/hotel/10.jpg' })
+  @prop({ default:  DEFAULT_VALUE.PREV_IMG})
   public previewImage: string;
 
   @prop({ default: [] })
@@ -55,19 +55,19 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
   @prop ({ default: false })
   public isPremium: boolean;
 
-  @prop ({ default: 1})
+  @prop ({ default: DEFAULT_VALUE.RATING})
   public rating: number;
 
-  @prop({ default: 'Apartment', type: () => String, enum: OfferType })
+  @prop({ default: DEFAULT_VALUE.TYPE, type: () => String, enum: OfferType })
   public type: OfferType;
 
-  @prop ({ default: 2 })
+  @prop ({ default: DEFAULT_VALUE.ROOM })
   public roomsNumber: number;
 
-  @prop({ default: 2 })
+  @prop({ default: DEFAULT_VALUE.GUEST })
   public maxGuests: number;
 
-  @prop({ default: 2000 })
+  @prop({ default: DEFAULT_VALUE.PRICE })
   public price: number;
 
   @prop({ default: [], type: () => Array })

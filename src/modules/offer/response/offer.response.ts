@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
 import UserResponse from '../../user/response/user.response.js';
+import { FIELD_NAME } from '../../../common/const.js';
 
 export default class OfferResponse {
   @Expose()
@@ -51,7 +52,7 @@ export default class OfferResponse {
   @Expose()
   public location!: object;
 
-  @Expose({ name: 'userId' })
+  @Expose({ name: FIELD_NAME.USER_ID })
   @Type(() => UserResponse)
   public author!: UserResponse;
 }

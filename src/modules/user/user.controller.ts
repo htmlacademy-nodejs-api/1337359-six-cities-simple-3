@@ -18,6 +18,7 @@ import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-ob
 import { UploadFileMiddleware } from '../../common/middlewares/upload-file.middleware.js';
 import LoggedUserResponse from './response/logged-user.response.js';
 import { JWT_ALGORISM } from './user.constant.js';
+import { ROUTE, FIELD_NAME } from '../../common/const.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -30,29 +31,32 @@ export default class UserController extends Controller {
     this.logger.info('Register routes for UserController');
 
     this.addRoute({
-      path: '/login',
+      path: ROUTE.LOGIN,
       method: HttpMethod.Get,
       handler: this.checkAuthenticate
     });
+
     this.addRoute({
-      path: '/login',
+      path: ROUTE.LOGIN,
       method: HttpMethod.Post,
       handler: this.login,
       middlewares: [new ValidateDtoMiddleware(LoginUserDto)],
     });
+
     this.addRoute({
-      path: '/register',
+      path: ROUTE.REGISTER,
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [new ValidateDtoMiddleware(CreateUserDto)],
     });
+
     this.addRoute({
-      path: '/:userId/avatar',
+      path: ROUTE.USER_ID + ROUTE.AVATAR,
       method: HttpMethod.Post,
       handler: this.uploadAvatar,
       middlewares: [
-        new ValidateObjectIdMiddleware('userId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'),
+        new ValidateObjectIdMiddleware(FIELD_NAME.USER_ID),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), FIELD_NAME.AVATAR),
       ]
     });
   }

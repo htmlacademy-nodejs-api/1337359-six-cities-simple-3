@@ -21,7 +21,7 @@ import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.mid
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 import { SameUserIdMiddleware } from '../../common/middlewares/same-userId.middleware.js';
-import { ROUTE } from '../../common/const.js';
+import { ROUTE, ENTITY_NAME, FIELD_NAME } from '../../common/const.js';
 
 type ParamsGetOffer = {
   offerId: string;
@@ -54,49 +54,49 @@ export default class OfferController extends Controller {
     });
 
     this.addRoute({
-      path: '/offer/:offerId',
+      path: ROUTE.OFFER + ROUTE.OFFER_ID,
       method: HttpMethod.Get,
       handler: this.show,
       middlewares: [
-        new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new ValidateObjectIdMiddleware(FIELD_NAME.OFFER_ID),
+        new DocumentExistsMiddleware(this.offerService, ENTITY_NAME.OFFER, FIELD_NAME.OFFER_ID),
       ],
     });
 
-    this.addRoute({ path: '/:city', method: HttpMethod.Get, handler: this.getFromCity });
+    this.addRoute({ path: ROUTE.CITY, method: HttpMethod.Get, handler: this.getFromCity });
 
     this.addRoute({
-      path: '/:offerId',
+      path: ROUTE.OFFER_ID,
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new SameUserIdMiddleware('offerId', this.offerService),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new ValidateObjectIdMiddleware(FIELD_NAME.OFFER_ID),
+        new SameUserIdMiddleware(FIELD_NAME.OFFER_ID, this.offerService),
+        new DocumentExistsMiddleware(this.offerService, ENTITY_NAME.OFFER, FIELD_NAME.OFFER_ID),
       ],
     });
 
     this.addRoute({
-      path: '/:offerId',
+      path: ROUTE.OFFER_ID,
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new SameUserIdMiddleware('offerId', this.offerService),
+        new ValidateObjectIdMiddleware(FIELD_NAME.OFFER_ID),
+        new SameUserIdMiddleware(FIELD_NAME.OFFER_ID, this.offerService),
         new ValidateDtoMiddleware(UpdateOfferDto),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new DocumentExistsMiddleware(this.offerService, ENTITY_NAME.OFFER, FIELD_NAME.OFFER_ID),
       ],
     });
 
     this.addRoute({
-      path: '/:offerId/comments',
+      path: ROUTE.OFFER_ID + ROUTE.COMMENTS,
       method: HttpMethod.Get,
       handler: this.getComments,
       middlewares: [
-        new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new ValidateObjectIdMiddleware(FIELD_NAME.OFFER_ID),
+        new DocumentExistsMiddleware(this.offerService, ENTITY_NAME.OFFER, FIELD_NAME.OFFER_ID),
       ],
     });
   }

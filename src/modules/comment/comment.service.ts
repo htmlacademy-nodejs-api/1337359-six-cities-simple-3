@@ -8,7 +8,7 @@ import { CommentEntity } from './comment.entity.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
 import { DEFAULT_COMMENT_COUNT } from './comment.constant.js';
-// сюда добавить увеличение числа комментов из offer?
+import { FIELD_NAME } from '../../common/const.js';
 
 @injectable()
 export default class CommentService implements CommentServiceInterface {
@@ -21,7 +21,7 @@ export default class CommentService implements CommentServiceInterface {
     const comment = await this.commentModel.create(dto);
     this.logger.info(`New comment created: ${comment.text}`);
 
-    return comment.populate('userId');
+    return comment.populate(FIELD_NAME.USER_ID);
   }
 
   public async findByOfferId(offerId: string, count?: number): Promise<DocumentType<CommentEntity>[]> {
@@ -29,13 +29,13 @@ export default class CommentService implements CommentServiceInterface {
 
     return this.commentModel
       .find({ offerId }, {}, { limit })
-      .populate('userId');
+      .populate(FIELD_NAME.USER_ID);
   }
 
   public async findAvgRating(): Promise<DocumentType<CommentEntity>[]> {
 
     return this.commentModel
-      .aggregate([{ $group: { _id: '$offerId' , avg:{$avg:'$rating'}}}]);
+      .aggregate([{ $group: { _id: `$${FIELD_NAME.OFFER_ID}` , avg:{$avg:`$${FIELD_NAME.RATING}`}}}]);
   }
 
   public async deleteByOfferId(offerId: string): Promise<number> {
